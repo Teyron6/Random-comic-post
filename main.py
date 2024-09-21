@@ -21,8 +21,8 @@ def get_comic(comic_id):
             }
 
 
-def post_random_comic():
-    bot = telegram.Bot(token=os.environ.get('TG_TOKEN'))
+def post_random_comic(token):
+    bot = telegram.Bot(token)
     comic_info = get_comic(random.randint(1, 2988))
     image_id = comic_info['image_id']
     bot.send_photo(chat_id=os.environ.get('GROUP_ID'), photo=open(f'comics/{image_id}.png', 'rb'), caption=comic_info['caption'])
@@ -31,7 +31,8 @@ def post_random_comic():
 
 def main():
     load_dotenv()
-    post_random_comic()
+    token=os.environ.get('TG_TOKEN')
+    post_random_comic(token)
 
 
 if __name__ == '__main__':
