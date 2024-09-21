@@ -18,12 +18,10 @@ def get_comic(comic_id):
     response = requests.get(url)
     response_json = response.json()
     comic_img_url = response_json['img']
-    print(comic_img_url)
     comic_img = requests.get(comic_img_url)
     response.raise_for_status()
     with open(f'comics/{comic_id}.png', 'wb') as f:
         f.write(comic_img.content)
-    print(response_json['alt'])
     return {'caption' : response_json['alt'],
             'image_id' : comic_id,
             }
