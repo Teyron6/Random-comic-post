@@ -5,6 +5,14 @@ from dotenv import load_dotenv
 import random
 
 
+def get_amount_of_comics():
+    url = 'https://xkcd.com/info.0.json'
+    response = requests.get(url)
+    response_json = response.json()
+    comics_amount = response_json['num']
+    return comics_amount
+
+
 def get_comic(comic_id):
     url = f'https://xkcd.com/{comic_id}/info.0.json'
     response = requests.get(url)
@@ -23,7 +31,7 @@ def get_comic(comic_id):
 
 def post_random_comic(token):
     bot = telegram.Bot(token)
-    comic_info = get_comic(random.randint(1, 2988))
+    comic_info = get_comic(random.randint(1, get_amount_of_comics()))
     image_id = comic_info['image_id']
     bot.send_photo(chat_id=os.environ.get('GROUP_ID'), photo=open(f'comics/{image_id}.png', 'rb'), caption=comic_info['caption'])
     os.remove(f'comics/{image_id}.png')
